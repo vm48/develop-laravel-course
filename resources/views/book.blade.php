@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Авторы</h1>
-<a href="/admin/login">В админку</a>
+<a href="/login">В админку</a>
 @foreach($books as $book)
 	<ul>
 		<li>

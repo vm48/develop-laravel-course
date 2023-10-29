@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StartController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,3 +23,11 @@ Route::name('start')->group(function () {
     Route::get('/categories', [CategoryController::class, 'index']);
 });
 
+Route::middleware('auth')->group(function () {
+    Route::get('/admin', [AdminController::class, 'index']);
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
+    ->name('home');

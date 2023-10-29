@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class AdminController extends Controller
     {
         $users = User::query()->get();
 
-        return view('admin.index');
+        return view('admin.user.index', compact('users'));
     }
 
     /**
@@ -23,7 +23,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.user.create');
     }
 
     /**
@@ -31,7 +31,9 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        User::query()->create($request->all());
+
+        return redirect()->route('admin.users');
     }
 
     /**
@@ -47,7 +49,9 @@ class AdminController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::query()->findOrFail($id);
+
+        return view('admin.user.edit', compact('user', 'id'));
     }
 
     /**
@@ -55,7 +59,13 @@ class AdminController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255']
+        ]);
+        $user      = User::query()->where('id', $id);
+        $user->update($validated);
+
+        return redirect()->route('admin.users.edit', $id);
     }
 
     /**
@@ -63,6 +73,9 @@ class AdminController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //        $user = User::query()->where('id', $id)->delete();
+        $user = User::destroy($id);
+
+        return redirect()->route('admin.users');
     }
 }

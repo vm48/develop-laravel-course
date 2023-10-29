@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StartController;
@@ -23,8 +24,20 @@ Route::name('start')->group(function () {
     Route::get('/categories', [CategoryController::class, 'index']);
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/admin', [AdminController::class, 'index']);
+Route::middleware('auth')->prefix('admin')->name('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index']);
+    Route::get('users', [UserController::class, 'index'])->name('.users');
+    Route::get('users/create', [UserController::class, 'create'])
+        ->name('.users.create');
+    Route::post('users/create', [UserController::class, 'store'])
+        ->name('.users.store');
+    Route::get('users/{id}/edit/', [UserController::class, 'edit'])
+        ->name('.users.edit');
+    Route::post('users/{id}/update/', [UserController::class, 'update'])
+        ->name('.users.update');
+    Route::delete('users/{id}/destroy/', [UserController::class, 'destroy'])
+        ->name('.users.destroy');
+    /*Route::name('.user')->resource('users', UserController::class);*/
 });
 
 Auth::routes();

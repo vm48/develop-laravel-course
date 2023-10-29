@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\StartController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
+Route::name('start')->group(function () {
+    Route::get('/', [StartController::class, 'index']);
+    Route::get('/books', [BookController::class, 'index']);
+    Route::get('/categories', [CategoryController::class, 'index']);
 });
+

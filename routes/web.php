@@ -1,10 +1,10 @@
 <?php
 
+use App\Helpers\Telegram;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\StartController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +19,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::name('start')->group(function () {
-    Route::get('/', [StartController::class, 'index']);
+    Route::get('/', function (Telegram $telegram) {
+        $sendMessage = $telegram->sendMessage(env('REPORT_TELEGRAM_ID'),
+            'test');
+
+        $sendMessage = json_decode($sendMessage);
+        $http        = $telegram->sendDocument(env('REPORT_TELEGRAM_ID'),
+            'books1.xlsx', $sendMessage->result->message_id);
+        //        dd(Storage::get('/books1.xlsx'));
+        dd($http->body());
+    });
     Route::get('/books', [BookController::class, 'index']);
     Route::get('/books/export', [BookController::class, 'booksExport'])
         ->name('.books.export');

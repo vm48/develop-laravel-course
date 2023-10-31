@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\BooksExport;
-use App\Models\Book;
+use App\Services\Interfaces\BooksContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -13,11 +13,12 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(BooksContract $booksContract)
     {
-        $books = Book::query()->with(['user', 'categories'])->get();
+        /*$books = Book::query()->with(['user', 'categories'])->get();*/
 
         /*$books = Book::query()->with('user')->first();*/
+        $books = $booksContract->get();
 
         return view('book', compact('books'));
     }

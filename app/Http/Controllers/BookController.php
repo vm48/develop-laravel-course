@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BooksExport;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BookController extends Controller
 {
@@ -17,6 +20,17 @@ class BookController extends Controller
         /*$books = Book::query()->with('user')->first();*/
 
         return view('book', compact('books'));
+    }
+
+    public function booksExport()
+    {
+        Excel::store(new BooksExport(2018), 'books1.xlsx');
+
+        return response(Storage::get('books1.xlsx'))->header('Content-Type',
+            Storage::mimeType('books1.xlsx'));
+
+        /*return Storage::get('books1.xlsx');*/
+        //        return Excel::download(new BooksExport, 'books.xlsx');
     }
 
     /**

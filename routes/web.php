@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::name('start')->group(function () {
     Route::get('/', [StartController::class, 'index']);
     Route::get('/books', [BookController::class, 'index']);
+    Route::get('/books/export', [BookController::class, 'booksExport'])
+        ->name('.books.export');
     Route::get('/categories', [CategoryController::class, 'index']);
 });
 

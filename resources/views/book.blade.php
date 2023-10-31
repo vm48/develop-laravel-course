@@ -9,6 +9,8 @@
 <body>
 <h1>Авторы</h1>
 <a href="/login">В админку</a>
+<a href="{{ route('start.books.export') }}" target="_blank">Скачать Excel</a>
+
 @foreach($books as $book)
 	<ul>
 		<li>
